@@ -1,5 +1,6 @@
 import enum
 import os
+import datetime
 import subprocess
 
 
@@ -43,8 +44,11 @@ class CommandChain:
         self.name = name
         self.project_path = project_path
         self.commands = [Command(project_path, cmd) for cmd in commands]
+        self.status = CommandStatus.CREATED
+        self.last_run_datetime = ""
 
     def run(self):
+        self.status = CommandStatus.RUNNING
         for cmd in self.commands:
             cmd.status = CommandStatus.PENDING
         failed = False
@@ -61,6 +65,11 @@ class CommandChain:
                 failed = True
 
         print(f"DEBUG: command chain '{self.name}' - COMPLETED")
+        if failed:
+            self.status = CommandStatus.FAILED
+        else:
+            self.status = CommandStatus.COMPLETED
+        self.last_run_datetime = datetime.datetime.now().isoformat()
         return not failed
 
     def get_output(self):

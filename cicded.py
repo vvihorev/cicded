@@ -2,7 +2,7 @@ import json
 
 from bottle import run, template, get, static_file, post, request, delete, put, redirect
 
-from command import CommandChain, Command
+from command import CommandChain, Command, CommandStatus
 
 
 chains = {}
@@ -20,7 +20,7 @@ def js(filepath):
 
 @get('/')
 def index():
-    return template("templates/index", chains=chains.keys())
+    return template("templates/index", chains=chains)
 
 
 @get('/chains/<chain>')
@@ -72,6 +72,8 @@ if __name__ == "__main__":
             config = json.loads(file.read())
         for name, chain in config.items():
             chains[name] = CommandChain(name, chain["path"], chain["commands"])
+            chains[name].last_run_datetime = chain["last_run"]
+            chains[name].status = CommandStatus(chain["status"])
     except:
         pass
 
@@ -84,7 +86,9 @@ if __name__ == "__main__":
     for name, chain in chains.items():
         state[name] = {}
         state[name]["path"] = chain.project_path
+        state[name]["status"] = chain.status.value
         state[name]["commands"] = [cmd.cmd for cmd in chain.commands]
+        state[name]["last_run"] = chain.last_run_datetime
 
     with open("config.json", "w") as file:
         config = json.dumps(state, indent=4)

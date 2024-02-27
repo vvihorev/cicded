@@ -35,9 +35,33 @@ function runChain(chain) {
   resetCommandStatus("yellow");
 
   // Run the command chain
-  axios.post("http://localhost:8080/chains/" + chain + "/run")
+  axios.post("http://localhost:1212/chains/" + chain + "/run")
   .then(function (response) {
     updateCommands(response.data.result);
+  })
+  .catch(function (error) {
+    alert(error);
+  });
+}
+
+function runFullChain(chain) {
+  var status = document.getElementById(chain + "-status");
+  status.classList = "status yellow";
+  axios.post("http://localhost:1212/chains/" + chain + "/run")
+  .then(function (response) {
+    jobs = response.data.result;
+    var good = true;
+    for (var i = 0; i < jobs.length; i++) {
+      if (jobs[i].status < 4) {
+        status.classList = "status red";
+        good = false;
+        break;
+      }
+    }
+    if (good) {
+      status.classList = "status green";
+    }
+    document.location.reload();
   })
   .catch(function (error) {
     alert(error);
@@ -74,7 +98,7 @@ function editCommand(commandId) {
     button.classList.remove("green");
     input.setAttribute("disabled", "");
 
-    axios.put("http://localhost:8080/chains/" + chainId + "/commands/" + commandId, {
+    axios.put("http://localhost:1212/chains/" + chainId + "/commands/" + commandId, {
       cmd: input.value
     })
     .then(function (response) {
@@ -93,7 +117,7 @@ function editCommand(commandId) {
 
 function removeCommand(commandId) {
   var chainId = document.getElementById("chain-id").innerHTML;
-  axios.delete("http://localhost:8080/chains/" + chainId + "/commands/" + commandId)
+  axios.delete("http://localhost:1212/chains/" + chainId + "/commands/" + commandId)
   .then(function (response) {
     console.log(response);
     document.location.reload();
@@ -104,7 +128,7 @@ function removeCommand(commandId) {
 }
 
 function createCommand() {
-  axios.post("http://localhost:8080/chains/" + chainId + "/commands")
+  axios.post("http://localhost:1212/chains/" + chainId + "/commands")
   .then(function (response) {
     console.log(response);
     document.location.reload();
@@ -112,16 +136,4 @@ function createCommand() {
   .catch(function (error) {
     alert(error);
   });
-}
-
-function createChain(event) {
-  console.log(event.target.elements);
-  // axios.post("http://localhost:8080/chains/" + chainId + "/commands")
-  // .then(function (response) {
-  //   console.log(response);
-  //   document.location.reload();
-  // })
-  // .catch(function (error) {
-  //   alert(error);
-  // });
 }

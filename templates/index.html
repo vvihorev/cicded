@@ -3,10 +3,24 @@
 </head>
 
 <body>
+    <div id="chain-id" style="display: none"></div>
     <div>
         <h1>Command chains</h1>
         % for chain in chains:
-        <p><a href="chains/{{chain}}">{{chain}}</a></p>
+        <div class="chain">
+            % if chains[chain].status.value == 2:
+            <div id="{{chain}}-status" class="status yellow"></div>
+            % elif chains[chain].status.value == 3:
+            <div id="{{chain}}-status" class="status red"></div>
+            % elif chains[chain].status.value == 4:
+            <div id="{{chain}}-status" class="status green"></div>
+            % else:
+            <div id="{{chain}}-status" class="status"></div>
+            % end
+            <a href="chains/{{chain}}">{{chain}}</a>
+            <button type="button" onclick="runFullChain('{{chain}}')">Run Chain</button>
+            <p class="last-run">Last Run: {{chains[chain].last_run_datetime}}</p>
+        </div>
         % end
     </div>
     <div class="form">
@@ -20,4 +34,6 @@
             <button type="submit">Create New Command Chain</button>
         </form>
     </div>
+    <script src="/static/axios.min.js"></script>
+    <script src="/static/scripts.js"></script>
 </body>
