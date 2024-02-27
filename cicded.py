@@ -76,7 +76,7 @@ if __name__ == "__main__":
         pass
 
     try:
-        run(host='localhost', port=8080, reloader=True)
+        run(host='localhost', port=1212, reloader=True)
     except KeyboardInterrupt:
         pass
 
