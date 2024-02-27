@@ -70,7 +70,6 @@ if __name__ == "__main__":
     try:
         with open("config.json", "r") as file:
             config = json.loads(file.read())
-        print(config)
         for name, chain in config.items():
             chains[name] = CommandChain(name, chain["path"], chain["commands"])
     except:
