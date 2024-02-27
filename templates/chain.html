@@ -7,9 +7,10 @@
 <body>
     <div id="chain-id" style="display: none">{{chain}}</div>
     <div class="command-list">
+        <h1>{{chain}}</h1>
         <div>
-            <button class="yellow" type="button"><a href="/">Back</a></button>
-            <button onclick="runChain('{{chain}}')" type="button">Run Chain</button>
+            <a class="yellow" href="/">Back</a>
+            <button onclick="runChain('{{chain}}')" type="button" style="background-color: #76f263;">Run Chain</button>
             <button onclick="createCommand()" type="button">Add Command</button>
         </div>
 

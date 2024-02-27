@@ -112,6 +112,8 @@ function editCommand(commandId) {
   } else {
     button.classList.add("green");
     input.removeAttribute("disabled");
+    input.focus();
+    input.select();
   }
 }
 

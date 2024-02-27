@@ -40,12 +40,15 @@ a {
   border-radius: 20px;
 }
 
+a:hover {
+  background-color: #d93;
+}
+
 input {
   background-color: #ddd;
   color: #444;
-  /* border: none; */
   text-align: left;
-  /* outline: none; */
+  width: 500px;
   font-size: 15px;
   border-radius: 20px;
   padding: 10px;
@@ -87,6 +90,10 @@ button:hover {
 
 .green {
   background-color: #76f263;
+}
+
+.green:hover {
+  background-color: #54d041;
 }
 
 .yellow {

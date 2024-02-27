@@ -3,6 +3,25 @@ body {
   margin: 0 auto;
 }
 
+h1 {
+  font-size: 40px;
+  font-family: mono;
+}
+
+a {
+  background-color: #ffbd52;
+  color: #222;
+  padding: 10px 15px; 
+  margin: 1em;
+  border-radius: 20px;
+  font-size: 15px;
+  font-family: mono;
+}
+
+a:hover {
+  background-color: #d93;
+}
+
  /* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
