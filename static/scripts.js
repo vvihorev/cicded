@@ -1,7 +1,7 @@
-var coll = document.getElementsByClassName("collapsible");
-var i;
+const chainId = document.getElementById("chain-id").innerHTML;
 
-for (i = 0; i < coll.length; i++) {
+var coll = document.getElementsByClassName("collapsible");
+for (var i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
@@ -74,8 +74,7 @@ function editCommand(commandId) {
     button.classList.remove("green");
     input.setAttribute("disabled", "");
 
-    var chainId = document.getElementById("chain-id").innerHTML;
-    axios.post("http://localhost:8080/chains/" + chainId + "/commands/" + commandId, {
+    axios.put("http://localhost:8080/chains/" + chainId + "/commands/" + commandId, {
       cmd: input.value
     })
     .then(function (response) {
@@ -90,4 +89,27 @@ function editCommand(commandId) {
     button.classList.add("green");
     input.removeAttribute("disabled");
   }
+}
+
+function removeCommand(commandId) {
+  var chainId = document.getElementById("chain-id").innerHTML;
+  axios.delete("http://localhost:8080/chains/" + chainId + "/commands/" + commandId)
+  .then(function (response) {
+    console.log(response);
+    document.location.reload();
+  })
+  .catch(function (error) {
+    alert(error);
+  });
+}
+
+function createCommand() {
+  axios.post("http://localhost:8080/chains/" + chainId + "/commands")
+  .then(function (response) {
+    console.log(response);
+    document.location.reload();
+  })
+  .catch(function (error) {
+    alert(error);
+  });
 }

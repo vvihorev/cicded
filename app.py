@@ -1,13 +1,13 @@
 import json
 
-from bottle import run, template, get, static_file, post, request
+from bottle import run, template, get, static_file, post, request, delete, put
 
 from command import CommandChain, Command
 
 
 chains = {
     "minimal_config": CommandChain("minimal_config",
-                                   "/home/vvihorev/code/minimal_config",
+                                   "/home/vvihorev/code/_personal/minimal_config",
                                    ["git status", "git lag", "git log"]),
 }
 
@@ -38,11 +38,25 @@ def run_chain(chain):
     return {"result": chain.get_output()}
 
 
-@post('/chains/<chain>/commands/<command>')
+@post('/chains/<chain>/commands')
+def create_command(chain):
+    chain = chains[chain]
+    chain.commands.append(Command(chain.project_path, ""))
+    return {"result": "ok"}
+
+
+@put('/chains/<chain>/commands/<command>')
 def update_command(chain, command):
     chain = chains[chain]
     body = json.loads(request.body.read())
     chain.commands[int(command)] = Command(chain.project_path, body["cmd"])
+    return {"result": "ok"}
+
+
+@delete('/chains/<chain>/commands/<command>')
+def delete_command(chain, command):
+    chain = chains[chain]
+    chain.commands.pop(int(command))
     return {"result": "ok"}
 
 

@@ -10,7 +10,7 @@
     <div class="command-list">
         <div>
             <button onclick="runChain('{{chain}}')" type="button">Run Chain</button>
-            <button type="button">Add Command</button>
+            <button onclick="createCommand()" type="button">Add Command</button>
         </div>
 
         % for i, command in enumerate(commands):
@@ -33,8 +33,7 @@
                 </div>
             </div>
             <button type="button" id="edit-{{i}}" onclick="editCommand('{{i}}')">✏️</button>
-            <button type="button">🔁</button>
-            <button type="button">🗑️</button>
+            <button type="button" id="remove-{{i}}" onclick="removeCommand('{{i}}')">🗑️</button>
         </div>
         % end
     </div>
