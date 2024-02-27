@@ -13,6 +13,17 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
+function resetCommandStatus(status) {
+  var cmdElems = document.getElementsByClassName("command");
+  for (var i = 0; i < cmdElems.length; i++) {
+    var status = cmdElems[i].getElementsByClassName("status")[0];
+    var output = cmdElems[i].getElementsByClassName("content")[0];
+
+    status.classList = "status " + status;
+    output.innerHTML = "";
+  }
+}
+
 function runChain(chain) {
   // Collapse all output windows
   var coll = document.getElementsByClassName("collapsible");
@@ -21,15 +32,7 @@ function runChain(chain) {
     content.style.maxHeight = null;
   }
 
-  // Set status of all jobs to pending
-  var cmdElems = document.getElementsByClassName("command");
-  for (var i = 0; i < cmdElems.length; i++) {
-    var status = cmdElems[i].getElementsByClassName("status")[0];
-    var output = cmdElems[i].getElementsByClassName("content")[0];
-
-    status.classList = "status yellow";
-    output.innerHTML = "";
-  }
+  resetCommandStatus("yellow");
 
   // Run the command chain
   axios.post("http://localhost:8080/chains/" + chain + "/run")
@@ -37,7 +40,7 @@ function runChain(chain) {
     updateCommands(response.data.result);
   })
   .catch(function (error) {
-    console.error(error);
+    alert(error);
   });
 }
 
@@ -60,5 +63,31 @@ function updateCommands(commands) {
       status.classList = "status";
     }
 
+  }
+}
+
+function editCommand(commandId) {
+  var button = document.getElementById("edit-" + commandId);
+  var input = document.getElementById("cmd-" + commandId);
+
+  if (button.classList.contains("green")) {
+    button.classList.remove("green");
+    input.setAttribute("disabled", "");
+
+    var chainId = document.getElementById("chain-id").innerHTML;
+    axios.post("http://localhost:8080/chains/" + chainId + "/commands/" + commandId, {
+      cmd: input.value
+    })
+    .then(function (response) {
+      console.log(response);
+      var cmdElems = document.getElementsByClassName("command");
+      cmdElems[commandId].getElementsByClassName("status")[0].classList = "status";
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+  } else {
+    button.classList.add("green");
+    input.removeAttribute("disabled");
   }
 }

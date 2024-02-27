@@ -1,11 +1,13 @@
-from bottle import route, run, template, get, static_file, post, redirect
+import json
 
-from command import CommandChain
+from bottle import run, template, get, static_file, post, request
+
+from command import CommandChain, Command
 
 
 chains = {
     "minimal_config": CommandChain("minimal_config",
-                                   "/home/vvihorev/code/_personal/minimal_config",
+                                   "/home/vvihorev/code/minimal_config",
                                    ["git status", "git lag", "git log"]),
 }
 
@@ -36,4 +38,12 @@ def run_chain(chain):
     return {"result": chain.get_output()}
 
 
-run(host='localhost', port=8080)
+@post('/chains/<chain>/commands/<command>')
+def update_command(chain, command):
+    chain = chains[chain]
+    body = json.loads(request.body.read())
+    chain.commands[int(command)] = Command(chain.project_path, body["cmd"])
+    return {"result": "ok"}
+
+
+run(host='localhost', port=8080, reloader=True)
