@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/chota@latest"> -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="command-list">
+        <div>
+            <button onclick="runChain('{{chain}}')" type="button">Run Chain</button>
+            <button type="button">Add Command</button>
+        </div>
+
+        % for command in commands:
+        <div class="command">
+            % if command.status.value == 2:
+            <div class="status yellow"></div>
+            % elif command.status.value == 3:
+            <div class="status red"></div>
+            % elif command.status.value == 4:
+            <div class="status green"></div>
+            % else:
+            <div class="status"></div>
+            % end
+            <div>
+                <button type="button" class="collapsible">
+                    <form><input value="{{command.cmd}}" disabled></input></form>
+                </button>
+                <div class="content">
+                    <pre>{{command.output}}</pre>
+                </div>
+            </div>
+            <button type="button">✏️</button>
+            <button type="button">🔁</button>
+            <button type="button">🗑️</button>
+        </div>
+        % end
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/static/scripts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+
+<body>
+    <div class="is-center">
+        <div class="col-6">
+            <h1>Command chains</h1>
+            % for chain in chains:
+            <p><a href="chains/{{chain}}">{{chain}}</a></p>
+            % end
+        </div>
+    </div>
+</body>
