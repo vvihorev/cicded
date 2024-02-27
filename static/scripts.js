@@ -113,3 +113,15 @@ function createCommand() {
     alert(error);
   });
 }
+
+function createChain(event) {
+  console.log(event.target.elements);
+  // axios.post("http://localhost:8080/chains/" + chainId + "/commands")
+  // .then(function (response) {
+  //   console.log(response);
+  //   document.location.reload();
+  // })
+  // .catch(function (error) {
+  //   alert(error);
+  // });
+}

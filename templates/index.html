@@ -1,14 +1,23 @@
 <head>
-    <!-- <link rel="stylesheet" href="https://unpkg.com/chota@latest"> -->
+    <link rel="stylesheet" href="/static/index-styles.css">
 </head>
 
 <body>
-    <div class="is-center">
-        <div class="col-6">
-            <h1>Command chains</h1>
-            % for chain in chains:
-            <p><a href="chains/{{chain}}">{{chain}}</a></p>
-            % end
-        </div>
+    <div>
+        <h1>Command chains</h1>
+        % for chain in chains:
+        <p><a href="chains/{{chain}}">{{chain}}</a></p>
+        % end
+    </div>
+    <div class="form">
+        <form action="/chains" method="POST">
+            <p>Name:
+                <input name="name" />
+            </p>
+            <p>Path:
+                <input name="path" />
+            </p>
+            <button type="submit">Create New Command Chain</button>
+        </form>
     </div>
 </body>
