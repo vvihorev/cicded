@@ -148,3 +148,8 @@ for (var i = 0; i < inputElems.length; i++) {
     }
   }
 }
+
+if (inputElems[inputElems.length - 1].value == "") {
+  editCommand(inputElems.length - 1);
+}
+
