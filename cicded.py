@@ -72,23 +72,30 @@ if __name__ == "__main__":
         with open("config.json", "r") as file:
             config = json.loads(file.read())
         for name, chain in config.items():
-            chains[name] = CommandChain(name, chain["path"], chain["commands"])
+            saved_commands = list(chain["commands"].keys())
+            chains[name] = CommandChain(name, chain["path"], saved_commands)
+            for command in chains[name].commands:
+                saved_command = chain["commands"][command.cmd]
+                command.status = CommandStatus(saved_command["status"])
+                command.output = saved_command["output"]
             chains[name].last_run_datetime = chain["last_run"]
             chains[name].status = CommandStatus(chain["status"])
-    except:
-        pass
+    except FileNotFoundError:
+        print("config.json not found, a new one will be created")
 
-    try:
-        run(host='localhost', port=1212, reloader=True)
-    except KeyboardInterrupt:
-        pass
+    run(host='localhost', port=1212)
 
     state = {}
     for name, chain in chains.items():
         state[name] = {}
         state[name]["path"] = chain.project_path
         state[name]["status"] = chain.status.value
-        state[name]["commands"] = [cmd.cmd for cmd in chain.commands]
+        state[name]["commands"] = {}
+        for command in chain.commands:
+            state[name]["commands"][command.cmd] = {
+                "status": command.status.value,
+                "output": command.output
+            }
         state[name]["last_run"] = chain.last_run_datetime
 
     with open("config.json", "w") as file:
