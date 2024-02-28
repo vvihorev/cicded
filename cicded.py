@@ -31,7 +31,7 @@ def index():
 
 @get('/chains/<chain>')
 def chain(chain):
-    return template("templates/chain", chain=chain, commands=chains[chain].commands)
+    return template("templates/chain", chain=chain, commands=chains[chain].commands, project_path=chains[chain].project_path)
 
 
 @post('/chains')
@@ -46,6 +46,15 @@ def create_chain():
 @delete('/chains/<chain>')
 def delete_chain(chain):
     chains.pop(chain)
+    redirect('/')
+
+
+@put('/chains/<chain>')
+def update_chain(chain):
+    name = request.forms.get("name")
+    path = request.forms.get("path")
+    chains[chain].name = name
+    chains[chain].project_path = path
     redirect('/')
 
 
