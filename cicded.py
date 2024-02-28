@@ -35,11 +35,17 @@ def chain(chain):
 
 
 @post('/chains')
-def chain():
+def create_chain():
     name = request.forms.get("name")
     path = request.forms.get("path")
     if name and path:
         chains[name] = CommandChain(name, path, [])
+    redirect('/')
+
+
+@delete('/chains/<chain>')
+def delete_chain(chain):
+    chains.pop(chain)
     redirect('/')
 
 

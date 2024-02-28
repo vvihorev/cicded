@@ -23,6 +23,7 @@
             <a href="chains/{{chain}}">{{chain}}</a>
             <button type="button" onclick="runFullChain('{{chain}}')">Run Chain</button>
             <p class="last-run">Last Run: {{chains[chain].last_run_datetime}}</p>
+            <button type="button" id="remove-{{chain}}" onclick="removeChain('{{chain}}')">🗑️</button>
         </div>
         % end
     </div>

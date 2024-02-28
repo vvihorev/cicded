@@ -153,3 +153,12 @@ if (inputElems[inputElems.length - 1].value == "") {
   editCommand(inputElems.length - 1);
 }
 
+function removeChain(chainId) {
+  axios.delete("http://localhost:1212/chains/" + chainId)
+  .then(function (response) {
+    document.location.reload();
+  })
+  .catch(function (error) {
+    alert(error);
+  });
+}
