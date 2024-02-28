@@ -28,7 +28,9 @@ function runChain(chain) {
   // Collapse all output windows
   var coll = document.getElementsByClassName("collapsible");
   for (var i = 0; i < coll.length; i++) {
-    coll[i].classList.toggle("active");
+    if (coll[i].classList.contains("active")) {
+      coll[i].classList.toggle("active");
+    }
     var content = coll[i].nextElementSibling;
     content.style.maxHeight = null;
   }
