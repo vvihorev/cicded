@@ -16,10 +16,10 @@ for (var i = 0; i < coll.length; i++) {
 function resetCommandStatus(status) {
   var cmdElems = document.getElementsByClassName("command");
   for (var i = 0; i < cmdElems.length; i++) {
-    var status = cmdElems[i].getElementsByClassName("status")[0];
+    var statusElem = cmdElems[i].getElementsByClassName("status")[0];
     var output = cmdElems[i].getElementsByClassName("content")[0];
 
-    status.classList = "status " + status;
+    statusElem.classList = "status " + status;
     output.innerHTML = "";
   }
 }
@@ -28,6 +28,7 @@ function runChain(chain) {
   // Collapse all output windows
   var coll = document.getElementsByClassName("collapsible");
   for (var i = 0; i < coll.length; i++) {
+    coll[i].classList.toggle("active");
     var content = coll[i].nextElementSibling;
     content.style.maxHeight = null;
   }
@@ -49,7 +50,7 @@ function runFullChain(chain) {
   status.classList = "status yellow";
   axios.post("http://localhost:1212/chains/" + chain + "/run")
   .then(function (response) {
-    jobs = response.data.result;
+    var jobs = response.data.result;
     var good = true;
     for (var i = 0; i < jobs.length; i++) {
       if (jobs[i].status < 4) {
