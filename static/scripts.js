@@ -102,7 +102,6 @@ function editCommand(commandId) {
       cmd: input.value
     })
     .then(function (response) {
-      console.log(response);
       var cmdElems = document.getElementsByClassName("command");
       cmdElems[commandId].getElementsByClassName("status")[0].classList = "status";
     })
@@ -121,7 +120,6 @@ function removeCommand(commandId) {
   var chainId = document.getElementById("chain-id").innerHTML;
   axios.delete("http://localhost:1212/chains/" + chainId + "/commands/" + commandId)
   .then(function (response) {
-    console.log(response);
     document.location.reload();
   })
   .catch(function (error) {
@@ -132,10 +130,18 @@ function removeCommand(commandId) {
 function createCommand() {
   axios.post("http://localhost:1212/chains/" + chainId + "/commands")
   .then(function (response) {
-    console.log(response);
     document.location.reload();
   })
   .catch(function (error) {
     alert(error);
   });
+}
+
+var inputElems = document.getElementsByTagName("input");
+for (var i = 0; i < inputElems.length; i++) {
+  inputElems[i].onkeyup = function(e){
+    if(e.keyCode == 13){
+      editCommand(this.id.split('-')[1]);
+    }
+  }
 }

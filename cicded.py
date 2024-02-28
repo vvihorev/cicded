@@ -19,6 +19,11 @@ def js(filepath):
     return static_file(filepath, root="static")
 
 
+@get("/<filepath:re:.*\.ico>")
+def img(filepath):
+    return static_file(filepath, root="static")
+
+
 @get('/')
 def index():
     return template("templates/index", chains=chains)
