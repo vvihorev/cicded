@@ -15,3 +15,8 @@ ssh -L 1212:localhost:1212 user@host
 ```
 
 Create command chains in the WebUI, or specify them in `config.json`
+
+Run a chain by calling an endpoint
+```
+curl -X POST http://localhost:1212/chains/test_repo/run | python -m json.tool
+```
