@@ -1,7 +1,7 @@
 from threading import Thread
 import json
 
-from bottle import run, template, get, static_file, post, request, delete, put, redirect
+from bottle import DictProperty, FormsDict, run, template, get, static_file, post, request, delete, put, redirect
 
 from command import CommandChain, Command, CommandStatus
 
@@ -9,17 +9,17 @@ from command import CommandChain, Command, CommandStatus
 chains = {}
 
 
-@get("/static/<filepath:re:.*\.css>")
+@get("/static/<filepath:re:.*\\.css>")
 def css(filepath):
     return static_file(filepath, root="static")
 
 
-@get("/static/<filepath:re:.*\.js>")
+@get("/static/<filepath:re:.*\\.js>")
 def js(filepath):
     return static_file(filepath, root="static")
 
 
-@get("/<filepath:re:.*\.ico>")
+@get("/<filepath:re:.*\\.ico>")
 def img(filepath):
     return static_file(filepath, root="static")
 
@@ -36,6 +36,7 @@ def chain(chain):
 
 @post('/chains')
 def create_chain():
+    assert isinstance(request.forms, FormsDict)
     name = request.forms.get("name")
     path = request.forms.get("path")
     if name and path:
@@ -51,6 +52,7 @@ def delete_chain(chain):
 
 @put('/chains/<chain>')
 def update_chain(chain):
+    assert isinstance(request.forms, FormsDict)
     name = request.forms.get("name")
     path = request.forms.get("path")
     chains[chain].name = name
