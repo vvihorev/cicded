@@ -1,3 +1,4 @@
+% from command import CommandStatus
 <!DOCTYPE html>
 <html>
 
@@ -18,11 +19,11 @@
 
         % for i, command in enumerate(commands):
         <div class="command">
-            % if command.status.value == 2:
+            % if command.status == CommandStatus.RUNNING:
             <div class="status yellow"></div>
-            % elif command.status.value == 3:
+            % elif command.status == CommandStatus.FAILED:
             <div class="status red"></div>
-            % elif command.status.value == 4:
+            % elif command.status == CommandStatus.COMPLETED:
             <div class="status green"></div>
             % else:
             <div class="status"></div>
@@ -37,6 +38,7 @@
             </div>
             <button type="button" id="edit-{{i}}" onclick="editCommand('{{i}}')">✏️</button>
             <button type="button" id="remove-{{i}}" onclick="removeCommand('{{i}}')">🗑️</button>
+            <button type="button" id="single-run-{{i}}" onclick="runCommand('{{i}}')">🏃</button>
         </div>
         % end
     </div>

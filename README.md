@@ -20,3 +20,10 @@ Run a chain by calling an endpoint
 ```
 curl -X POST http://localhost:1212/chains/test_repo/run | python -m json.tool
 ```
+
+# Planned Features
+
+- [ ] Securing the application
+- [ ] Blocking command execution until triggered manually
+- [ ] Alerting on command failures
+- [ ] Edit commands as lines in a text area

@@ -130,6 +130,33 @@ function removeCommand(commandId) {
   });
 }
 
+function runCommand(commandId) {
+  // collapse the command box
+  var coll = document.getElementsByClassName("collapsible");
+  if (coll[commandId].classList.contains("active")) {
+    coll[commandId].classList.toggle("active");
+  }
+  var content = coll[commandId].nextElementSibling;
+  content.style.maxHeight = null;
+
+  // reset command status to yellow
+  var cmdElems = document.getElementsByClassName("command");
+  var statusElem = cmdElems[commandId].getElementsByClassName("status")[0];
+  var output = cmdElems[commandId].getElementsByClassName("content")[0];
+  statusElem.classList = "status " + "yellow";
+  output.innerHTML = "";
+
+  var chainId = document.getElementById("chain-id").innerHTML;
+  axios.post("http://localhost:1212/chains/" + chainId + "/commands/" + commandId + "/run")
+  .then(function (response) {
+    updateCommands(response.data.result);
+    document.location.reload();
+  })
+  .catch(function (error) {
+    alert(error);
+  });
+}
+
 function createCommand() {
   axios.post("http://localhost:1212/chains/" + chainId + "/commands")
   .then(function (response) {

@@ -87,6 +87,12 @@ def delete_command(chain, command):
     return {"result": "ok"}
 
 
+@post('/chains/<chain>/commands/<command>/run')
+def run_command(chain, command):
+    chain = chains[chain]
+    return {"result": chain.run_command(int(command))}
+
+
 if __name__ == "__main__":
     try:
         with open("config.json", "r") as file:

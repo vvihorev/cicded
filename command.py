@@ -29,7 +29,7 @@ class Command:
             full_output += output
         if error:
             full_output += error
-         
+
         if command.returncode != 0:
             self.output = full_output
             self.status = CommandStatus.FAILED
@@ -75,6 +75,14 @@ class CommandChain:
     def get_output(self):
         output = []
         for cmd in self.commands:
-            output.append({"cmd": cmd.cmd, "status": cmd.status.value, "output": cmd.output})
+            output.append({"cmd": cmd.cmd, "status": cmd.status.name, "output": cmd.output})
         return output
+
+    def run_command(self, command_index):
+        cmd = self.commands[command_index]
+        cmd.status = CommandStatus.RUNNING
+
+        status = cmd.run()
+        print(f"DEBUG: command '{cmd.cmd}' - {status.name}")
+        return cmd.status == CommandStatus.COMPLETED
 
